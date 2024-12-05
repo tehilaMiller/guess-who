@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>נחש מי | המשחק</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="icon" href="../images/logo/icon.png" />
+    <p id="timer"></p>
+  </head>
+  <body id="bodygame">
+    <a href="../homepage.html"
+      ><img src="../images/buttons/homepage.png" class="img" id="home "
+    /></a>
+    <div id="allCharactersImages"></div>
+    <div id="imageContainer"></div>
+
+    <div id="button_questions">
+      <img src="../images/buttons/left.png" id="next" />
+      <img src="../images/buttons/rectangle.png" id="rectangle" />
+      <p id="ques"></p>
+      <img src="../images/buttons/right.png" id="prev" />
+    </div>
+
+    <img src="../images/question.jpg" id="cardcho" class="rand" />
+  </body>
+  <script>
+    const people = {
+      adi: [false, false, true, false, true, false, true, true, false],
+      anat: [false, false, false, false, true, false, true, false, false],
+      ariel: [true, true, false, true, false, false, false, true, false],
+      ayala: [true, false, false, false, false, false, true, false, true],
+      dani: [false, false, false, false, false, false, false, true, false],
+      efrat: [false, false, true, false, false, false, false, true, false],
+      elisheva: [false, true, false, false, true, false, false, false, false],
+      esti: [false, true, false, false, false, false, false, true, false],
+      gili: [false, false, true, false, false, false, true, true, false],
+      libi: [false, false, true, false, true, true, false, true, false],
+      maayan: [false, true, false, true, false, false, false, true, false],
+      michal: [false, false, true, false, false, false, true, false, true],
+      natan: [true, true, false, true, false, true, false, false, false],
+      nechami: [false, false, true, true, false, false, true, true, false],
+      noam: [true, false, false, false, false, false, false, true, false],
+      nurit: [false, false, false, false, true, false, true, true, false],
+      rina: [false, false, false, false, true, false, false, true, false],
+      ruti: [false, true, false, false, true, false, true, true, false],
+      shira: [false, false, false, false, true, false, false, false, false],
+      shoshi: [false, false, true, false, false, false, true, false, false],
+      shulamit: [false, true, false, false, true, false, false, true, false],
+      tali: [false, false, true, false, true, false, false, false, false],
+      yael: [true, false, false, false, true, false, true, true, false],
+      yafit: [true, true, false, false, true, false, false, true, false],
+      yonatan: [true, false, false, false, false, true, false, true, false],
+    };
+
+    let index_ques = 0;
+    const images = [
+      "../images/characters/adi.jpg",
+      "../images/characters/anat.jpg",
+      "../images/characters/ariel.jpg",
+      "../images/characters/ayala.jpg",
+      "../images/characters/dani.jpg",
+      "../images/characters/efrat.jpg",
+      "../images/characters/elisheva.jpg",
+      "../images/characters/esti.jpg",
+      "../images/characters/gili.jpg",
+      "../images/characters/libi.jpg",
+      "../images/characters/maayan.jpg",
+      "../images/characters/michal.jpg",
+      "../images/characters/natan.jpg",
+      "../images/characters/nechami.jpg",
+      "../images/characters/noam.jpg",
+      "../images/characters/nurit.jpg",
+      "../images/characters/rina.jpg",
+      "../images/characters/ruti.jpg",
+      "../images/characters/shira.jpg",
+      "../images/characters/shoshi.jpg",
+      "../images/characters/shulamit.jpg",
+      "../images/characters/tali.jpg",
+      "../images/characters/yael.jpg",
+      "../images/characters/yafit.jpg",
+      "../images/characters/yonatan.jpg",
+    ];
+
+    const questions = [
+      "משקפיים יש?",
+      "כובע יש?",
+      "סרט יש?",
+      "תיק יש?",
+      "שמלה יש?",
+      "שיער שחור יש?",
+      "שיער אסוף יש?",
+      "צווארון יש?",
+      "עגילים יש?",
+    ];
+
+    let timer = 0;
+    let timerInterval;
+
+    function stopper() {
+      let minutes = Math.floor(timer / 60);
+      let seconds = timer % 60;
+      let time = "0" + minutes + ":";
+      if (seconds < 10) {
+        time += "0";
+      }
+      time += seconds;
+      document.querySelector("#timer").innerHTML = time;
+      timer++;
+    }
+
+    function startTimer() {
+      timerInterval = setInterval(stopper, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    let rand_Person;
+    let allCharacters = [];
+
+    document.addEventListener("DOMContentLoaded", startGame);
+    document.querySelector("#next").addEventListener("click", f_next);
+    document.querySelector("#prev").addEventListener("click", f_prev);
+    document.querySelector("#rectangle").addEventListener("click", showImage);
+
+    function startGame() {
+      startTimer();
+      document.querySelector("#ques").innerHTML = questions[index_ques];
+      rand_Person = Math.floor(Math.random() * images.length);
+      let container = document.querySelector("#allCharactersImages");
+      for (let i = 0; i < images.length; i++) {
+        let img = document.createElement("img");
+        img.src = images[i];
+        img.className = "imgCharacters";
+        img.dataset.index = i;
+        img.addEventListener("click", replaceImage);
+        container.appendChild(img);
+        if ((i + 1) % 5 === 0) {
+          let br = document.createElement("br");
+          container.appendChild(br);
+        }
+      }
+    }
+
+    function f_next() {
+      if (index_ques != questions.length - 1) {
+        index_ques++;
+        document.querySelector("#ques").innerText = questions[index_ques];
+      }
+    }
+
+    function f_prev() {
+      if (index_ques != 0) {
+        index_ques--;
+        document.querySelector("#ques").innerText = questions[index_ques];
+      }
+    }
+
+    function showImage() {
+      const selectedPerson = Object.keys(people)[rand_Person];
+      const answer = people[selectedPerson][index_ques];
+      if (answer == false) {
+        const imageContainer = document.getElementById("imageContainer");
+        const img = document.createElement("img");
+        img.src = "../images/captions/no.png";
+        img.setAttribute("id", "yesorno");
+        imageContainer.appendChild(img);
+      } else {
+        const imageContainer = document.getElementById("imageContainer");
+        const img = document.createElement("img");
+        img.src = "../images/captions/yes.png";
+        img.setAttribute("id", "yesorno");
+        imageContainer.appendChild(img);
+      }
+      setTimeout(removeImage, 2000);
+    }
+
+    function removeImage() {
+      const img = document.getElementById("yesorno");
+      if (img) {
+        img.remove();
+      }
+    }
+
+    function replaceImage(event) {
+      const img = event.target;
+      const originalSrc = images[img.dataset.index];
+
+      if (img.src.includes("question.jpg")) {
+        img.src = originalSrc;
+      } else {
+        img.src = "../images/question.jpg";
+      }
+
+      checkRemainingImages();
+    }
+
+    function checkRemainingImages() {
+      const remainingImages = document.querySelectorAll(
+        ".imgCharacters[src^='../images/characters']"
+      );
+      if (remainingImages.length === 1) {
+        const remainingImage = remainingImages[0];
+        remainingImages.forEach((img) => {
+          img.removeEventListener("click", replaceImage);
+        });
+
+        let remainingIndex = remainingImage.dataset.index;
+        remainingIndex = parseInt(remainingIndex, 10);
+        if (remainingIndex === rand_Person) {
+          console.log("Correct guess!");
+          displayResultImage(true);
+          stopTimer();
+          saveRecord(timer);
+        } else {
+          console.log("Incorrect guess.");
+          displayResultImage(false);
+          stopTimer();
+        }
+      }
+    }
+
+    function displayResultImage(isCorrect) {
+      const imageContainer = document.getElementById("imageContainer");
+      const img = document.createElement("img");
+      if (!isCorrect) {
+        img.src = "../images/Captions/oops.png";
+        img.setAttribute("id", "yesorno");
+      } else {
+        img.src = "../images/Captions/wow.png";
+        img.setAttribute("id", "yesorno");
+      }
+      imageContainer.appendChild(img);
+    }
+
+    function saveRecord(time) {
+      let records = JSON.parse(localStorage.getItem("records")) || [];
+      records.push(time);
+      records.sort((a, b) => a - b);
+      localStorage.setItem("records", JSON.stringify(records));
+      localStorage.setItem("currentRecord", time);
+      window.location.href = "records.html";
+    }
+
+    function displayResultImage(isCorrect) {
+      const imageContainer = document.getElementById("imageContainer");
+      const img = document.createElement("img");
+
+      if (!isCorrect) {
+        img.src = "../images/Captions/oops.png";
+        img.setAttribute("id", "woworoops");
+      } else {
+        img.src = "../images/Captions/wow.png";
+        img.setAttribute("id", "woworoops");
+      }
+
+      imageContainer.appendChild(img);
+
+      replaceRandImage();
+    }
+
+    function replaceRandImage() {
+      var randImage = document.querySelector(".rand");
+
+      randImage.src = images[rand_Person];
+    }
+  </script>
+</html>

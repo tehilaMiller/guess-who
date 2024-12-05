@@ -1,0 +1,507 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>נחש מי | המשחק</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" href="../images/logo/icon.png" />
+
+    <script>
+        const people = {
+            yael:[true, false, false],
+
+        }
+      var qarr = [
+        "משקפיים יש?",
+        "כובע יש?",
+        "סרט יש?",
+        "תיק יש?",
+        "שמלה יש?",
+        "שיער שחור יש?",
+        "שיער אסוף יש?",
+      ];
+
+      var index_ques = 0;
+      var points = 100;
+      var rand_Person = 0;
+      var answer = "";
+      var id1 = 0;
+      var i = 0;
+      var flag = 0;
+      var hafuc = 0;
+      var arrc = [
+        50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
+      ];
+      var arr = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      var flag1 = 0;
+      var ask = 0;
+      var j = 0;
+      var src = " ";
+      var id = 0;
+      var div5;
+      var bt;
+      var k = 0;
+      var flagcheck = true;
+      var t;
+      var img = " ";
+      var img2 = " ";
+      var images = [
+        "דמויות2/יעל.png",
+        "דמויות2/אבי.png",
+        "דמויות2/שירה.png",
+        "דמויות2/יונתן.png",
+        "דמויות2/יהודה.png",
+        "דמויות2/מיכל.png",
+        "דמויות2/הלל.png",
+        "דמויות2/אפרת.png",
+        "דמויות2/שני.png",
+        "דמויות2/יאיר.png",
+        "דמויות2/טליה.png",
+        "דמויות2/מתן2.png",
+        "דמויות2/איתמר.png",
+        "דמויות2/אילה.png",
+        "דמויות2/דניאל.png",
+        "דמויות2/תמר.png",
+      ];
+
+      function start() {
+        document.getElementById("ques").innerText = qarr[index_ques];
+        //...להגריל מספר בין 1 ל16
+        rand_Person = Math.floor(Math.random() * 16);
+        //document.getElementById("ss").innerText = rand_Person;
+        //נסיון
+        document.getElementById("music").play();
+      }
+
+      function f_next() {
+        document.getElementById("next").setAttribute("class", "");
+        setTimeout(
+          () => document.getElementById("next").setAttribute("class", "animb"),
+          0
+        );
+        if (index_ques == 9) index_ques = 0;
+        document.getElementById("ques").innerText = qarr[index_ques + 1];
+        index_ques = index_ques + 1;
+      }
+
+      function f_prev() {
+        document.getElementById("prev").setAttribute("class", "");
+        setTimeout(
+          () => document.getElementById("prev").setAttribute("class", "animb"),
+          0
+        );
+        if (index_ques == 0) index_ques = 10;
+        document.getElementById("ques").innerText = qarr[index_ques - 1];
+        index_ques = index_ques - 1;
+      }
+
+      function chk_answer() {
+        ask++;
+        if (ask > 3) points = points - 5;
+        switch (rand_Person) {
+          case 0:
+            answer = yael[index_ques];
+            break;
+          case 1:
+            answer = avi[index_ques];
+            break;
+          case 2:
+            answer = shira[index_ques];
+            break;
+          case 3:
+            answer = yonatan[index_ques];
+            break;
+          case 4:
+            answer = yehuda[index_ques];
+            break;
+          case 5:
+            answer = michal[index_ques];
+            break;
+          case 6:
+            answer = hilel[index_ques];
+            break;
+          case 7:
+            answer = efrat[index_ques];
+            break;
+          case 8:
+            answer = shani[index_ques];
+            break;
+          case 9:
+            answer = yair[index_ques];
+            break;
+          case 10:
+            answer = talya[index_ques];
+            break;
+          case 11:
+            answer = matan[index_ques];
+            break;
+          case 12:
+            answer = itamar[index_ques];
+            break;
+          case 13:
+            answer = ayala[index_ques];
+            break;
+          case 14:
+            answer = daniel[index_ques];
+            break;
+          case 15:
+            answer = tamar[index_ques];
+            break;
+        }
+        if (answer == "yes") {
+          document.getElementById("neon").classList.add("active");
+          setTimeout(function () {
+            document.getElementById("neon").classList.remove("active");
+          }, 2000);
+        }
+        if (answer == "no") {
+          document.getElementById("flux").classList.add("active");
+          setTimeout(function () {
+            document.getElementById("flux").classList.remove("active");
+          }, 2000);
+        }
+      }
+
+      function check1() {
+        if (flagcheck == true) {
+          document
+            .getElementById("wow")
+            .setAttribute("style", "display:block;");
+          clearInterval(t);
+          img2 = document.getElementById("cardcho");
+          img2.src = images[rand_Person];
+          document.getElementById("sss").innerText = "your score:" + points;
+          var winner;
+          var min = 0;
+          if (!localStorage.win) winner = {};
+          else {
+            winner = JSON.parse(localStorage.win);
+            for (var item in winner) {
+              min = Math.min(min, item);
+            }
+          }
+          if (points > min) {
+            document
+              .getElementById("fromm")
+              .setAttribute("style", "display:block;");
+          }
+        }
+
+        //אם הנקודות מספיק גבוה לשלוח לרשימת מנצחים
+        else {
+          gameover();
+        }
+      }
+      var name;
+      function save() {
+        name = document.getElementById("name").value;
+        var winner;
+        var min = 0;
+        if (!localStorage.win) winner = {};
+        else {
+          winner = JSON.parse(localStorage.win);
+          for (var item in winner) {
+            min = Math.min(min, item);
+          }
+        }
+        if (points > min) {
+          winner[points] = name;
+          localStorage.win = JSON.stringify(winner);
+          open("records.html", "_self");
+        }
+      }
+      function hfo() {
+        id1 = event.target.id;
+        img = document.getElementById(id1);
+        //אם התמונה לא הפוכה
+        if (!img.src.includes("q.png")) {
+          if (id1 == rand_Person) flagcheck = false;
+          img.src = "q.png";
+          img.id = id1;
+          hafuc++;
+          if (hafuc == 15) check1();
+        }
+        //אם התמונה הפוכה
+        else {
+          id = img.id;
+          if (id == rand_Person) flagcheck = true;
+          src = images[id];
+          img.src = src;
+          points -= 5;
+          hafuc--;
+        }
+      }
+
+      function timer() {
+        //טימר
+        var second = 1;
+        var minuts = 3;
+        var flag = 0;
+        t = setInterval(function () {
+          if (second == 0) {
+            if (flag == 1) {
+              second = 59;
+              minuts--;
+              flag = 0;
+            } else {
+              flag = 1;
+              second = 0;
+            }
+          }
+
+          if (second <= 9) {
+            if (second > 0) second -= 1;
+            document.getElementById("clock").innerHTML = minuts + ":0" + second;
+          } else {
+            document.getElementById("clock").innerHTML = minuts + ":" + second;
+            if (second > 0) second -= 1;
+          }
+          if (minuts == 0 && second == 0) {
+            gameover();
+          }
+        }, 1000);
+      }
+      function gameover() {
+        clearInterval(t);
+        document
+          .getElementById("gameover")
+          .setAttribute("style", "display:block;");
+        img2 = document.getElementById("cardcho");
+        img2.src = images[rand_Person];
+      }
+    </script>
+  </head>
+
+  <body dir="rtl" onload="start() ,timer()">
+    <a href="../homepage.html"
+      ><img src="../images/buttons/homepage.png" id="home"
+    /></a>
+
+    <div class="container">
+      <div id="neon" class="neon">yes</div>
+      <div id="flux" class="flux">no</div>
+    </div>
+
+    <img
+      src="נסיונות/תמונה6.png"
+      style="
+        width: 15vw;
+        height: 30vh;
+        display: inline-block;
+        position: absolute;
+        top: 0vh;
+      "
+    />
+    <img
+      src="../images/question.jpg"
+      id="cardcho"
+      style="
+        position: absolute;
+        top: 13vh;
+        width: 6vw;
+        height: 14vh;
+        right: 4.7vw;
+      "
+    />
+
+    <div id="div2">
+      <table id="tpic">
+        <tr class="trt">
+          <td>
+            <img
+              src="דמויות2/יעל.png"
+              onclick="hfo()"
+              id="0"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+
+          <td>
+            <img
+              src="דמויות2/אבי.png"
+              onclick="hfo()"
+              id="1"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+
+          <td>
+            <img
+              src="דמויות2/שירה.png"
+              onclick="hfo()"
+              id="2"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+
+          <td>
+            <img
+              src="דמויות2/יונתן.png"
+              onclick="hfo()"
+              id="3"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+        </tr>
+
+        <tr class="trt">
+          <td>
+            <img
+              src="דמויות2/יהודה.png"
+              onclick="hfo()"
+              id="4"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+          <td>
+            <img
+              src="דמויות2/מיכל.png"
+              onclick="hfo()"
+              id="5"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+          <td>
+            <img
+              src="דמויות2/הלל.png"
+              onclick="hfo()"
+              id="6"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+          <td>
+            <img
+              src="דמויות2/אפרת.png"
+              onclick="hfo()"
+              id="7"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+        </tr>
+
+        <tr class="trt">
+          <td>
+            <img
+              src="דמויות2/שני.png"
+              onclick="hfo()"
+              id="8"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+          <td>
+            <img
+              src="דמויות2/יאיר.png"
+              onclick="hfo()"
+              id="9"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+          <td>
+            <img
+              src="דמויות2/טליה.png"
+              onclick="hfo()"
+              id="10"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+          <td>
+            <img
+              src="דמויות2/מתן2.png"
+              onclick="hfo()"
+              id="11"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+        </tr>
+
+        <!--היה 8 ו20-->
+
+        <tr class="trt">
+          <td>
+            <img
+              src="דמויות2/איתמר.png"
+              onclick="hfo()"
+              id="12"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+          <td>
+            <img
+              src="דמויות2/אילה.png"
+              onclick="hfo()"
+              id="13"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+          <td>
+            <img
+              src="דמויות2/דניאל.png"
+              onclick="hfo()"
+              id="14"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+          <td>
+            <img
+              src="דמויות2/תמר.png"
+              onclick="hfo()"
+              id="15"
+              style="width: 7vw; height: 16vh; cursor: pointer"
+            />
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div id="fromm">
+      <input type="text" id="name" value="" />
+      <button onclick="save()">ok</button>
+    </div>
+    <div style="position: absolute; left: 20%; bottom: 0vh" id="div4">
+      <img
+        style="position: absolute; left: 100%"
+        src="../images/buttons/right.png"
+        id="prev"
+        onclick="f_prev()"
+      />
+      <div class="wrapper">
+        <img
+          src="../images/buttons/rectangle.png"
+          id="picqu"
+          onclick="chk_answer();"
+        />
+        <span id="ques" onclick="chk_answer();"></span>
+      </div>
+      <img
+        style="position: absolute; left: 0px"
+        src="../images/buttons/left.png"
+        id="next"
+        onclick="f_next()"
+      />
+    </div>
+    <div id="ss"></div>
+    <div id="clock"></div>
+
+    <div id="gameover">
+      <div id="ssss">
+        <!--<button class="bt1" onclick="start() ,timer()">משחק חדש</button>-->
+        <button class="bt1" onclick='window.location.replace("game.html")'>
+          משחק חדש
+        </button>
+      </div>
+    </div>
+
+    <div id="wow">
+      <button class="bt2" onclick='window.location.replace("game.html")'>
+        משחק חדש
+      </button>
+      <div id="sss"></div>
+    </div>
+
+    <!--נסיון-->
+    <audio id="music" loop>
+      <!--<source src="%d7%95%d7%90%d7%a0%d7%99.mp3" type="audio/mpeg" />-->
+
+      <source src="Shadows%20-%20Shindig.mp3" type="audio/mpeg" />
+    </audio>
+  </body>
+</html>

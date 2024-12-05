@@ -1,0 +1,55 @@
+﻿<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>נחש מי | שיאים</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="icon" href="../images/logo/icon.png" />
+    <style>
+      .new-record {
+        font-size: 1.5em; 
+        font-weight: bold;
+        color: red; 
+      }
+    </style>
+  </head>
+  <body onload="loadRecords()" class="bodyrecord">
+    <a href="../homepage.html">
+      <img src="../images/buttons/homepage.png" id="home" class="img" />
+    </a>
+
+    <div id="recordsContainer"></div>
+    <script>
+      function loadRecords() {
+        const recordsContainer = document.getElementById("recordsContainer");
+        const records = JSON.parse(localStorage.getItem("records")) || [];
+        const currentRecord = localStorage.getItem("currentRecord");
+
+        recordsContainer.innerHTML = "";
+        if (records.length === 0) {
+          recordsContainer.innerHTML = "<p>אין שיאים עדיין</p>";
+          return;
+        }
+
+        const recordList = document.createElement("ul");
+        records.forEach((record, index) => {
+          const listItem = document.createElement("li");
+          const minutes = Math.floor(record / 60)
+            .toString()
+            .padStart(2, "0");
+          const seconds = (record % 60).toString().padStart(2, "0");
+          listItem.textContent = `זמן: ${minutes}:${seconds} שניות`;
+
+          if (record == currentRecord) {
+            listItem.classList.add("new-record");
+          }
+
+          recordList.appendChild(listItem);
+        });
+
+        recordsContainer.appendChild(recordList);
+
+        // להסיר את ההדגשה עבור משחקים חדשים בעת התחלת משחק חדש
+        localStorage.removeItem("currentRecord");
+      }
+    </script>
+  </body>
